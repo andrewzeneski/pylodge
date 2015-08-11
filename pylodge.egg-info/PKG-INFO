@@ -1,0 +1,22 @@
+Metadata-Version: 1.1
+Name: pylodge
+Version: 0.0.1
+Summary: Automation test integration for Test Lodge
+Home-page: https://github.com/Veechi/pylodge
+Author: Dice Holdings Inc
+Author-email: ashwin.kondapalli@dice.com
+License: MIT
+Description: Py Lodge full documentation
+Keywords: TestLodge,test automation
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: QA
+Classifier: Topic :: Test Automation :: Integration Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
