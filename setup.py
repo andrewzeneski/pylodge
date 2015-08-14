@@ -19,10 +19,10 @@ setup(
     name='pylodge',
     version='0.1',
 
-    description='Test Automation plugin for Test Lodge',
+    description='Test Automation framework for TestLodge',
     long_description=long_description,
 
-    url='https://github.com/Veechi/pylodge',
+    url='https://github.com/gettalent/pylodge',
 
     # Author details
     author='Ashwin Kondapalli',
@@ -34,8 +34,8 @@ setup(
     classifiers=[
 
         'Development Status :: 3 - Alpha',
-        'Intended Audience :: QA',
-        'Topic :: Test Automation :: Integration Tools',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Quality Assurance',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',

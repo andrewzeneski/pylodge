@@ -1,8 +1,8 @@
 Metadata-Version: 1.1
 Name: pylodge
 Version: 0.1
-Summary: Test Automation plugin for Test Lodge
-Home-page: https://github.com/Veechi/pylodge
+Summary: Test Automation framework for TestLodge
+Home-page: https://github.com/gettalent/pylodge
 Author: Ashwin Kondapalli
 Author-email: ashwin@gettalent.com
 License: MIT
@@ -10,13 +10,13 @@ Description: PyLodge
         =======
         
         PyLodge is a framework that integrates the automated tests with Test Lodge. It will update the status of the test cases
-        in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create Jira
-        Ticket if the project in Test Lodge has the issue tracker configured.
+        in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create a
+         defect in the issue tracker if the project in Test Lodge has the issue tracker configured.
 Keywords: TestLodge,test automation
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
-Classifier: Intended Audience :: QA
-Classifier: Topic :: Test Automation :: Integration Tools
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Quality Assurance
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 2
 Classifier: Programming Language :: Python :: 2.6
