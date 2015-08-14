@@ -1,3 +1,0 @@
-[console_scripts]
-pylodge = pylodge:make_config
-

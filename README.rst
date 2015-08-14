@@ -1,7 +1,48 @@
 PyLodge
+=======
 
 PyLodge is a framework that integrates the automated tests with Test Lodge. It will update the status of the test cases
-in Test Lodge based on the execution status of the script.
+in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create Jira
+Ticket if the project in Test Lodge has the issue tracker configured.
 
 
 https://github.com/Veechi/pylodge
+
+Usage:
+======
+
+Make sure you configure pylodge by entering the Test Lodge authentication details in pylodge.cfg file. The file can be
+ found in ~/.pylodge folder
+
+If you are using the pytest framework, you need to add the following lines of code in the __init__.py file
+
+This will create a test run in test lodge whenever your automated tests run
+
+from pylodge import PyLodge
+pylodge_obj = PyLodge()
+pylodge_obj.create_test_run()
+
+
+In the conftest.py, you need to write a hook that will read the execution status of your pytest and pass that status to
+ pylodge. Something like this
+
+@pytest.mark.tryfirst
+def pytest_runtest_makereport( __multicall__):
+    rep = __multicall__.execute()
+    if rep.when == 'call':
+        nodeid = rep.nodeid
+        callerlist = nodeid.split("::")
+        test_name= os.path.splitext(callerlist[0])[0]
+        substring = re.search('test_(.*)', test_name)
+        if substring:
+            test_name = substring.group(1)
+        if rep.passed:
+            print 'Passed'
+            pylodge_obj.mark_test_as_passed(test_name)
+        elif rep.failed:
+            print 'Failed'
+            pylodge_obj.mark_test_as_failed(test_name)
+        elif rep.skipped:
+            print 'Skipped'
+            pylodge_obj.mark_test_as_skipped(test_name)
+    return rep

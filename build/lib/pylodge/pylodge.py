@@ -1,10 +1,11 @@
-__author__ = 'ashwin'
+# Copyright (c) 2015 Ashwin Kondapalli
+#
+# See the file license.txt for copying permission.
 __author__ = 'ashwin'
 
 import requests
 import os
 import datetime
-import inspect
 import ConfigParser
 from os.path import expanduser
 
@@ -34,14 +35,11 @@ class PyLodge():
         ##Get the Suite IDs of all the suites in the project
 
         project_id = self.fetch_and_save_project_id()
-        #project_id = self.project_id
         response = requests.get(self._api_url + '/v1/projects/%s/suites.json' % project_id,
                                 auth=self._auth_tuple)
         response_dict = response.json()
 
         suite_ids = [suite_dict['id'] for suite_dict in response_dict['suites']]
-        # print suite_ids
-
         time_stamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S').format()
         test_run_name = "Selenium_Test_Run_" + time_stamp
 
@@ -68,20 +66,10 @@ class PyLodge():
 
         """
 
-        if not test_name:
-            # Get the test case method name from stack
-            caller_file = None
-            for idx, stack_frame_tuple in enumerate(inspect.stack()):
-                if stack_frame_tuple[3] == 'fetch_and_save_test_case_id_from_test_name':
-                    caller_frame_tuple = inspect.stack()[idx + 1]
-                    caller_file = caller_frame_tuple[1]   # TODO should get method name not file name
-            head, tail = os.path.split(caller_file)
-            test_name = os.path.splitext(tail)[0]
-        #print 'Test file Name from fetch is' + test_name
+
         # Make API call to get the test step ID from the method name
         project_id = self.project_id
         run_id = self.run_id
-        #print 'Run ID from feth test case is' + str(run_id)
         response = requests.get(self._api_url + '/v1/projects/%s/runs/%s/executed_steps.json' % (project_id, run_id),
                                 auth=self._auth_tuple)
         response_dict = response.json()
@@ -102,7 +90,6 @@ class PyLodge():
 
         # Set the test step ID
         self.test_case_id = test_case_id
-        #print 'Test Case ID from fetch is ' + str(self.test_case_id)
         return self.test_case_id
 
     def mark_test_as_passed(self, test_case_name=None):
@@ -111,9 +98,7 @@ class PyLodge():
         :param test_case_name: If None, will try to guess from stack trace
         """
         project_id =self.project_id
-        #print project_id
         run_id = self.run_id
-        #print run_id
         test_case_id = self.fetch_and_save_test_case_id_from_test_name(test_case_name)
         requests.patch(
             self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
@@ -127,9 +112,7 @@ class PyLodge():
         :param test_case_name: If None, will try to guess from stack trace
         """
         project_id =self.project_id
-        #print project_id
         run_id = self.run_id
-        #print run_id
         test_case_id = self.fetch_and_save_test_case_id_from_test_name(test_case_name)
         requests.patch(
             self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
@@ -143,9 +126,7 @@ class PyLodge():
         :param test_case_name: If None, will try to guess from stack trace
         """
         project_id =self.project_id
-        #print project_id
         run_id = self.run_id
-        #print run_id
         test_case_id = self.fetch_and_save_test_case_id_from_test_name(test_case_name)
         requests.patch(
             self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
