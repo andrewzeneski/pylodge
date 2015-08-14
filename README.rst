@@ -2,8 +2,8 @@ PyLodge
 =======
 
 PyLodge is a framework that integrates the automated tests with Test Lodge. It will update the status of the test cases
-in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create Jira
-Ticket if the project in Test Lodge has the issue tracker configured.
+in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create a
+ defect in the issue tracker if the project in Test Lodge has the issue tracker configured.
 
 
 https://github.com/Veechi/pylodge
@@ -46,3 +46,4 @@ In the conftest.py, you need to write a hook that will read the execution status
                 print 'Skipped'
                 pylodge_obj.mark_test_as_skipped(test_name)
         return rep
+
