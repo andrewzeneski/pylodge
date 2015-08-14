@@ -1,2 +1,12 @@
-__author__ = 'ashwin'
+"""
 
+:copyright: (c) 2015 by Ashwin Kondapalli.
+:license: MIT, see license.txt for more details.
+
+"""
+
+__title__ = 'pylodge'
+__version__ = '0.1'
+__author__ = 'Ashwin Kondapalli'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2015 Ashwin Kondapalli'
