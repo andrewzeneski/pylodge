@@ -50,9 +50,7 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=['requests'],
-
-
+    install_requires=['pyOpenSSL', 'ndg-httpsclient', 'pyasn1', 'requests'],
 
 )
 make_config.create_config_file()
