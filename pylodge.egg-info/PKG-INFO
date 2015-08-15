@@ -14,7 +14,7 @@ Description: PyLodge
          defect in the issue tracker if the project in Test Lodge has the issue tracker configured.
 Keywords: TestLodge,test automation
 Platform: UNKNOWN
-Classifier: Development Status :: 3 - Alpha
+Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Developers
 Classifier: Topic :: Software Development :: Quality Assurance
 Classifier: License :: OSI Approved :: MIT License
