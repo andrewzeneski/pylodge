@@ -1,4 +1,1 @@
-pyOpenSSL
-ndg-httpsclient
-pyasn1
 requests
