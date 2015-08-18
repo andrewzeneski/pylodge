@@ -9,7 +9,7 @@ defect in the issue tracker if the project in Test Lodge has the issue tracker c
 https://github.com/gettalent/pylodge
 
 Recommended Folder Structure:
-=========================
+=============================
 
 The following example assumes the test automation project directory structure as mentioned below and using py.test
 
@@ -19,7 +19,7 @@ myproject/
         page2.py
         ...
     tests/
-        __init__.py
+        \__init__.py
         conftest.py
         module1/
             test_testcase1.py
