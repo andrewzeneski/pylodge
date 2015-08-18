@@ -9,7 +9,7 @@ from pylodge import make_config
 
 setup(
     name='pylodge',
-    version='0.1.5',
+    version='0.1.6',
 
     description='Test Automation framework for TestLodge',
 
