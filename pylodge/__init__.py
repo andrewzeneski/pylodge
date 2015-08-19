@@ -6,7 +6,7 @@
 """
 
 __title__ = 'pylodge'
-__version__ = '0.1.8'
+__version__ = '0.1.9'
 __author__ = 'Ashwin Kondapalli'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2015 Ashwin Kondapalli'

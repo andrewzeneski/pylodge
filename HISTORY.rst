@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+0.1.9 (2015-08-19)
+++++++++++++++++++
+**Bugfixes**
+Bugfix for Minor issue in case-insensitive search
+
 0.1.8 (2015-08-19)
 ++++++++++++++++++
 
