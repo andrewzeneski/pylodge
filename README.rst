@@ -1,9 +1,9 @@
 PyLodge
 =======
 
-PyLodge is a framework that integrates the automated tests with Test Lodge. It will update the status of the test cases
-in Test Lodge based on the execution status of the automation script. In case of Failed test cases, it will create a
-defect in the issue tracker if the project in Test Lodge has the issue tracker configured.
+PyLodge is a framework that integrates the automated tests with TestLodge. It will update the status of the test cases
+in TestLodge based on the execution status of the automation script. In case of Failed test cases, it will create a
+defect in the issue tracker if the project in TestLodge has the issue tracker configured.
 
 
 https://github.com/gettalent/pylodge
@@ -34,22 +34,19 @@ tests/
         module2/
 
             test_testcase2.py
-            
+
              ...
 
 
 Usage:
 ======
 
-Make sure you configure pylodge by entering the Test Lodge authentication details in pylodge.cfg file. The file can be
- found in ~/.pylodge folder
+If you are using the pytest framework, you need to add the following lines of code in the __init__.py file.
 
-If you are using the pytest framework, you need to add the following lines of code in the __init__.py file
+This will create a test run in TestLodge whenever your automated tests run::
 
-This will create a test run in test lodge whenever your automated tests run::
-
-    from pylodge import PyLodge
-    pylodge_obj = PyLodge()
+    from pylodge.pylodge import PyLodge
+    pylodge_obj = PyLodge(testlodge_username, testlodge_password, testlodge_project, testlodge_api_url)
     pylodge_obj.create_test_run()
 
 In the conftest.py, you need to write a hook that will read the execution status of your pytest and pass that status to

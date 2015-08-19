@@ -3,25 +3,17 @@
 # See the file license.txt for copying permission.
 __author__ = 'ashwin'
 
-import requests
-import os
 import datetime
-import ConfigParser
-from os.path import expanduser
+
+import requests
 
 
 class PyLodge():
-    def __init__(self):
-
-        home = expanduser('~')
-        os.chdir(home)
-        pylodgeconf = os.path.join(home, '.pylodge', 'pylodge.cfg')
-        config = ConfigParser.RawConfigParser()
-        config.read(pylodgeconf)
-        self.username = config.get('Authentication Details', 'username')
-        self.password = config.get('Authentication Details', 'password')
-        self._app_name = config.get('Authentication Details', 'project_name')
-        self._api_url = config.get('Authentication Details', 'api_url')
+    def __init__(self, username, password, project_name, api_url):
+        self.username = username
+        self.password = password
+        self._app_name = project_name
+        self._api_url = api_url
         self._auth_tuple = (self.username, self.password)
 
     def fetch_and_save_project_id(self):

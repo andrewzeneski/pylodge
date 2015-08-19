@@ -2,7 +2,6 @@ README.rst
 setup.cfg
 setup.py
 pylodge/__init__.py
-pylodge/make_config.py
 pylodge/pylodge.py
 pylodge.egg-info/PKG-INFO
 pylodge.egg-info/SOURCES.txt

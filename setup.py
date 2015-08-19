@@ -2,14 +2,12 @@ __author__ = 'ashwin'
 """A Test Lodge based pylodge module.
 
 """
-from setuptools import setup, find_packages
-from pylodge import make_config
 
-
+from setuptools import setup
 
 setup(
     name='pylodge',
-    version='0.1.6',
+    version='0.1.7',
 
     description='Test Automation framework for TestLodge',
 
@@ -39,4 +37,3 @@ setup(
     install_requires=['requests'],
 
 )
-make_config.create_config_file()
