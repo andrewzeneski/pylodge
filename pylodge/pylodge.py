@@ -77,7 +77,7 @@ class PyLodge():
             response_dict = response.json()
             for executed_steps_dict in response_dict['executed_steps']:
 
-                if executed_steps_dict['title'] == test_name:
+                if executed_steps_dict['title'].tolower() == test_name.tolower():
                     test_case_id = executed_steps_dict['id']
 
         # Set the test step ID

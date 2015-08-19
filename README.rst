@@ -8,8 +8,20 @@ defect in the issue tracker if the project in TestLodge has the issue tracker co
 
 https://github.com/gettalent/pylodge
 
-Recommended Folder Structure:
-=============================
+C
+
+Installation:
+=============
+
+To install pylodge, simply:
+
+.. code-block:: bash
+
+    $ pip install pylodge
+
+
+Recommended Folder Structure for tests:
+=======================================
 
 The following example assumes the test automation project directory structure as mentioned below and using py.test
 
