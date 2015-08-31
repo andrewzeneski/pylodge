@@ -3,6 +3,13 @@
 Release History
 ---------------
 
+0.2.0 (2015-08-31)
+++++++++++++++++++
+
+**Features and Improvements**
+pylodge will now create a test run based on user supplied value. If none, it will create a test run with a default time
+stamped name
+
 0.1.9 (2015-08-19)
 ++++++++++++++++++
 **Bugfixes**

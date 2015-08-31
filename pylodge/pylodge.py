@@ -23,9 +23,21 @@ class PyLodge():
         self.project_id = filter(lambda project: self._app_name in project.values(), response_dict['projects'])[0]['id']
         return self.project_id
 
-    def create_test_run(self):
-        ##Get the Suite IDs of all the suites in the project
+    def create_test_run(self,run_name=None, user_agent=None):
+        """
 
+        :param run_name: If None, will create test run with the timestamped name starting as Automated_Test_Run_
+        :param user_agent: If None, will create test run with the timestamped name ending as Default_User_Agent
+        """
+        if not run_name:
+            test_run_name = run_name
+        else:
+            test_run_name = 'Automated_Test_Run_'
+        if not user_agent:
+            user_agent = user_agent
+        else:
+            user_agent = 'Default_User_Agent'
+        # Get the Suite IDs of all the suites in the project
         project_id = self.fetch_and_save_project_id()
         response = requests.get(self._api_url + '/v1/projects/%s/suites.json' % project_id,
                                 auth=self._auth_tuple)
@@ -33,7 +45,7 @@ class PyLodge():
 
         suite_ids = [suite_dict['id'] for suite_dict in response_dict['suites']]
         time_stamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S').format()
-        test_run_name = "Selenium_Test_Run_" + time_stamp
+        test_run_name = test_run_name + '-' + time_stamp + '-'+ user_agent
 
         # Create a Test run including all the test suites in the project and get the Test run ID
         response = requests.post(self._api_url + '/v1/projects/%s/runs.json' % project_id,
