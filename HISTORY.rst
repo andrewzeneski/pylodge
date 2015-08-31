@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.2.1 (2015-08-31)
+++++++++++++++++++
+
+**Bugfixes**
+Bugfix for Minor issue in creating the test run
+
 0.2.0 (2015-08-31)
 ++++++++++++++++++
 

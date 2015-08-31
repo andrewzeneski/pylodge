@@ -30,13 +30,15 @@ class PyLodge():
         :param user_agent: If None, will create test run with the timestamped name ending as Default_User_Agent
         """
         if not run_name:
-            test_run_name = run_name
-        else:
             test_run_name = 'Automated_Test_Run_'
-        if not user_agent:
-            user_agent = user_agent
+
         else:
+            test_run_name = run_name
+        if not user_agent:
             user_agent = 'Default_User_Agent'
+        else:
+            user_agent = user_agent
+
         # Get the Suite IDs of all the suites in the project
         project_id = self.fetch_and_save_project_id()
         response = requests.get(self._api_url + '/v1/projects/%s/suites.json' % project_id,
