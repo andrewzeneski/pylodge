@@ -57,6 +57,19 @@ class PyLodge():
         self.run_id = response_dict['id']
         return self.run_id
 
+    def update_test_run_name(self,test_run_id, test_run_name):
+        project_id = self.project_id
+        response = requests.get(self._api_url + '/v1/projects/%s/runs/%s.json' % (project_id, test_run_id),
+                                 auth=self._auth_tuple)
+        response_dict = response.json()
+        run_name = response_dict['name']
+        test_run_name = run_name + test_run_name
+        requests.patch(
+            self._api_url + '/v1/projects/%s/runs/%s.json' % (project_id, test_run_id),
+            json={
+                'run': {'name': test_run_name }},
+            auth=self._auth_tuple)
+
 
     def fetch_and_save_test_case_id_from_test_name(self, test_name=None):
         """
