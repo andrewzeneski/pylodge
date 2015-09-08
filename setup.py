@@ -7,7 +7,7 @@ from setuptools import setup
 
 setup(
     name='pylodge',
-    version='0.2.2',
+    version='0.2.5',
 
     description='Test Automation framework for TestLodge',
 

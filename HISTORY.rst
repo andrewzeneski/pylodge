@@ -2,6 +2,11 @@
 
 Release History
 ---------------
+0.2.5 (2015-08-31)
+++++++++++++++++++
+**Features and Improvements**
+Method to delete redundant test runs
+Method to update test status without requiring the status to be passed as an argument. 
 
 0.2.1 (2015-08-31)
 ++++++++++++++++++
