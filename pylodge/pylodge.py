@@ -96,6 +96,7 @@ class PyLodge():
                                  auth=self._auth_tuple)
         response_dict = response.json()
         test_runs_id = filter(lambda runs: test_run_name in runs.values(), response_dict['runs'])[0]['id']
+        return test_runs_id
 
     def fetch_and_save_test_case_id_from_test_name(self, test_name=None):
         """
@@ -132,10 +133,40 @@ class PyLodge():
 
                 if executed_steps_dict['title'].lower() == test_name.lower():
                     test_case_id = executed_steps_dict['id']
+                    return test_case_id
 
-        # Set the test step ID
-        self.test_case_id = test_case_id
-        return self.test_case_id
+
+
+    def fetch_and_save_not_run_test_case_ids(self, test_run_name):
+        """
+        Gets the test cases not executed in a given test_run_name
+         :param test_run_name: The name of test run
+
+        """
+
+        # Make API call to get the test Run ID from the test run name
+        project_id = self.fetch_and_save_project_id()
+        response = requests.get(self._api_url + '/v1/projects/%s/runs.json' % project_id,
+                                 auth=self._auth_tuple)
+        response_dict = response.json()
+        run_id = filter(lambda runs: test_run_name in runs.values(), response_dict['runs'])[0]['id']
+        response = requests.get(self._api_url + '/v1/projects/%s/runs/%s/executed_steps.json' % (project_id, run_id),
+                                auth=self._auth_tuple)
+        response_dict = response.json()
+        pagination_dict = response_dict['pagination']
+        total_pages = pagination_dict['total_pages']
+        test_case_ids = []
+
+        for page in range(1, total_pages + 1):
+            response = requests.get(
+                url=self._api_url + '/v1/projects/%s/runs/%s/executed_steps.json' % (project_id, run_id),
+                params={'page': page},
+                auth=self._auth_tuple)
+            response_dict = response.json()
+            for executed_steps_dict in response_dict['executed_steps']:
+                if executed_steps_dict['passed']==None:
+                    test_case_ids.append(executed_steps_dict['id'])
+        return test_case_ids
 
     def mark_test_as_passed(self, test_case_name=None):
         """
@@ -218,13 +249,17 @@ class PyLodge():
                 'executed_step': {'actual_result': 'Test Case Skipped', 'passed': 2, 'create_issue_tracker_ticket': 0}},
             auth=self._auth_tuple)
 
-    def mark_test_status(self, test_case_name,status):
+    def mark_test_status(self, test_case_name,status='skipped',test_run_name=None):
         """
 
         :param test_case_name: If None, will try to guess from stack trace
         """
         project_id =self.project_id
-        run_id = self.run_id
+        if test_run_name==None:
+            run_id = self.run_id
+        else:
+            run_id = self.fetch_test_run_id(test_run_name)
+
         test_case_id = self.fetch_and_save_test_case_id_from_test_name(test_case_name)
         if status.lower() == 'passed':
             status_flag = 1
@@ -238,8 +273,39 @@ class PyLodge():
         requests.patch(
             self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
             json={
-                'executed_step': {'actual_result': 'Test Case Passed', 'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
+                'executed_step': {'actual_result': 'Test Case %s'%status, 'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
             auth=self._auth_tuple)
+
+    def mark_test_status_multiple(self, test_case_names=None,status='skipped',test_run_name=None, test_case_ids=None):
+        """
+
+        :param test_case_name: If None, will try to guess from stack trace
+        """
+        project_id =self.project_id
+        if test_run_name==None:
+            run_id = self.run_id
+        else:
+            run_id = self.fetch_test_run_id(test_run_name)
+
+        if test_case_ids==None:
+            test_case_ids=[]
+            for test_case_name in test_case_names:
+                test_case_id = self.fetch_and_save_test_case_id_from_test_name(test_case_name)
+                test_case_ids.append(test_case_id)
+        for test_case_id in test_case_ids:
+            if status.lower() == 'passed':
+                status_flag = 1
+                issue_tracker_flag=0
+            elif status.lower() == 'failed':
+                status_flag = 0
+                issue_tracker_flag=1
+            elif status.lower() == 'skipped':
+                status_flag = 2
+                issue_tracker_flag=0
+            response=requests.patch(self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
+                                    json={
+                    'executed_step': {'actual_result': 'Test Case Passed', 'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
+                                    auth=self._auth_tuple)
 
     def fetch_and_save_test_case_id_from_test_name_runid(self, run_id, test_name=None):
         """
@@ -252,6 +318,7 @@ class PyLodge():
         Test case name: test_create_user
 
         :param test_name: If None, will get it from the stack trace
+               run_id: Test Run id
 
         """
 
@@ -278,6 +345,7 @@ class PyLodge():
 
                 if executed_steps_dict['title'].lower() == test_name.lower():
                     test_case_id = executed_steps_dict['id']
+                    return test_case_id
 
         # Set the test step ID
         self.test_case_id = test_case_id

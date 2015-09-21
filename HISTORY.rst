@@ -2,11 +2,17 @@
 
 Release History
 ---------------
+0.2.6 (2015-09-21)
+++++++++++++++++++
+**Features and Improvements**
+Method (mark_test_status_multiple) to mark remaining test cases as skipped
+Method to update test status without requiring the status to be passed as an argument.
+
 0.2.5 (2015-08-31)
 ++++++++++++++++++
 **Features and Improvements**
 Method to delete redundant test runs
-Method to update test status without requiring the status to be passed as an argument. 
+Method to update test status without requiring the status to be passed as an argument.
 
 0.2.1 (2015-08-31)
 ++++++++++++++++++
