@@ -4,7 +4,6 @@
 __author__ = 'ashwin'
 
 import datetime
-
 import requests
 
 
@@ -249,7 +248,7 @@ class PyLodge():
                 'executed_step': {'actual_result': 'Test Case Skipped', 'passed': 2, 'create_issue_tracker_ticket': 0}},
             auth=self._auth_tuple)
 
-    def mark_test_status(self, test_case_name,status='skipped',test_run_name=None):
+    def mark_test_status(self, test_case_name,status='skipped',test_run_name=None,test_log=None):
         """
 
         :param test_case_name: If None, will try to guess from stack trace
@@ -273,7 +272,8 @@ class PyLodge():
         requests.patch(
             self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
             json={
-                'executed_step': {'actual_result': 'Test Case %s'%status, 'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
+                'executed_step': {'actual_result': 'Test Case %s and the log is \n %s'%(status,test_log),
+                                  'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
             auth=self._auth_tuple)
 
     def mark_test_status_multiple(self, test_case_names=None,status='skipped',test_run_name=None, test_case_ids=None):
@@ -302,9 +302,10 @@ class PyLodge():
             elif status.lower() == 'skipped':
                 status_flag = 2
                 issue_tracker_flag=0
-            response=requests.patch(self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json' % (project_id, run_id, test_case_id),
-                                    json={
-                    'executed_step': {'actual_result': 'Test Case Passed', 'passed': status_flag, 'create_issue_tracker_ticket': issue_tracker_flag}},
+            response=requests.patch(self._api_url + '/v1/projects/%s/runs/%s/executed_steps/%s.json'
+                                    % (project_id, run_id, test_case_id),
+                                    json={'executed_step': {'actual_result': 'Test Case Passed', 'passed': status_flag,
+                                                            'create_issue_tracker_ticket': issue_tracker_flag}},
                                     auth=self._auth_tuple)
 
     def fetch_and_save_test_case_id_from_test_name_runid(self, run_id, test_name=None):
@@ -329,7 +330,8 @@ class PyLodge():
                                 auth=self._auth_tuple)
         response_dict = response.json()
         if not response_dict.get('pagination'):
-            raise Exception("mark_test_as_failed_runid: response_dict did not have pagination for Run ID %s: %s" %(run_id, str(response_dict)))
+            raise Exception("mark_test_as_failed_runid: response_dict did not have pagination for Run ID %s: %s"
+                            %(run_id, str(response_dict)))
 
         pagination_dict = response_dict['pagination']
         total_pages = pagination_dict['total_pages']

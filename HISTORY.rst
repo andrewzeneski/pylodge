@@ -2,6 +2,11 @@
 
 Release History
 ---------------
+0.2.7 (2015-09-22)
+++++++++++++++++++
+**Features and Improvements**
+Minor changes to the method (mark_test_status_multiple) to pass logs as an optional argument.
+
 0.2.6 (2015-09-21)
 ++++++++++++++++++
 **Features and Improvements**
