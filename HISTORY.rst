@@ -2,6 +2,11 @@
 
 Release History
 ---------------
+0.2.8 (2015-09-22)
+++++++++++++++++++
+**Features and Improvements**
+Added descriptions and usage info for all the methods
+
 0.2.7 (2015-09-22)
 ++++++++++++++++++
 **Features and Improvements**

@@ -16,7 +16,7 @@ class PyLodge():
         self._auth_tuple = (self.username, self.password)
 
     def fetch_and_save_project_id(self):
-        # Get Project ID
+        # Get Project ID. This method returns the id of the specified test lodge project .
         response = requests.get(self._api_url + '/v1/projects.json', auth=self._auth_tuple)
         response_dict = response.json()
         self.project_id = filter(lambda project: self._app_name in project.values(), response_dict['projects'])[0]['id']
@@ -24,8 +24,10 @@ class PyLodge():
 
     def create_test_run(self, run_name=None):
         """
-
+        This method will create a test run in Test Lodge including all test suites in it. It will return the run id of
+        the created test run.
         :param run_name: If None, will create test run with the timestamped name starting as Automated_Test_Run_
+        :return run_id: The test run id
         """
 
         # Get the Suite IDs of all the suites in the project
@@ -48,6 +50,12 @@ class PyLodge():
         return self.run_id
 
     def delete_redundant_test_runs(self,run_name):
+        """
+
+        This method will delete any redundant test runs matching the provided test run name except the latest one.
+        :param run_name:The name of the Test run which has redundant test runs with the same name.
+        :return:
+        """
         project_id = self.fetch_and_save_project_id()
         response = requests.get(self._api_url + '/v1/projects/%s/runs.json' % project_id,
                                 auth=self._auth_tuple)
@@ -63,6 +71,12 @@ class PyLodge():
 
 
     def update_test_run_name(self,test_run_id, test_run_name):
+        """
+        This method will update the test run name provided the run id and new the new test run name .
+        :param test_run_id:The id of the test run that need to be updated.
+        :param test_run_name: The new name of the Test run .
+        :return:
+        """
         # Updates the test run name
         project_id = self.fetch_and_save_project_id()
         response = requests.get(self._api_url + '/v1/projects/%s/runs/%s.json' % (project_id, test_run_id),
@@ -77,6 +91,11 @@ class PyLodge():
             auth=self._auth_tuple)
 
     def fetch_test_run_name(self, test_run_id):
+        """
+        This method will get the test run name for the provided run id.
+        :param test_run_id: The run id  of the Test run that need to be fetched.
+        :return: run_name: The test run name
+        """
         assert test_run_id, "test_run_id should be set to something"
 
         # Fetch Test Run Name
@@ -90,6 +109,12 @@ class PyLodge():
         return run_name
 
     def fetch_test_run_id(self, test_run_name):
+        """
+        This method will get the test run id for the provided test run name.
+        :param test_run_name:The name of the Test run that need to be fetched.
+        :return: The test run id
+        """
+
         project_id = self.fetch_and_save_project_id()
         response = requests.get(self._api_url + '/v1/projects/%s/runs.json' % project_id,
                                  auth=self._auth_tuple)
@@ -107,10 +132,10 @@ class PyLodge():
         Test case number: TC-987
         Test case name: test_create_user
 
-        :param test_name: If None, will get it from the stack trace
+        :param test_name: The test case title
+        :return test_case_id: The test case id
 
         """
-
 
         # Make API call to get the test step ID from the method name
         project_id = self.project_id
@@ -140,6 +165,7 @@ class PyLodge():
         """
         Gets the test cases not executed in a given test_run_name
          :param test_run_name: The name of test run
+         :return A list of test case ids that are not run
 
         """
 
@@ -169,8 +195,9 @@ class PyLodge():
 
     def mark_test_as_passed(self, test_case_name=None):
         """
-
-        :param test_case_name: If None, will try to guess from stack trace
+        This method will mark the executed step in a test run as Passed in Test Lodge provided the
+         executed step title.
+        :param test_case_name: The title of the test case
         """
         project_id =self.project_id
         run_id = self.run_id
@@ -183,8 +210,10 @@ class PyLodge():
 
     def mark_test_as_passed_runid(self,run_id, test_case_name=None):
         """
+        This method will mark the executed step in a test run as Passed in Test Lodge provided the test run id and the executed step title.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param test_case_name: The title of the test case for which the status need to be marked in Test Lodge
+         run_id: The test run id
         """
         project_id =self.fetch_and_save_project_id()
         test_case_id = self.fetch_and_save_test_case_id_from_test_name_runid(run_id,test_case_name)
@@ -196,8 +225,10 @@ class PyLodge():
 
     def mark_test_as_failed(self, test_case_name=None):
         """
+        This method will mark the executed step in a test run as Failed in Test Lodge provided the
+        executed step title.It will create a issue tracker ticket if the issue tracker is configured for the project.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param test_case_name: The title of the test case for which the status need to be marked in Test Lodge
         """
         project_id =self.project_id
         run_id = self.run_id
@@ -210,8 +241,11 @@ class PyLodge():
 
     def mark_test_as_failed_runid(self, run_id, test_case_name=None):
         """
+        This method will mark the executed step in a test run as Failed in Test Lodge provided the test run id and
+        the executed step title. It will create a issue tracker ticket if the issue tracker is configured for the project.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param run_id: The run id of the test run which contains the executed step
+        test_name: The title of the test case for which the status need to be marked in Test Lodge
         """
         project_id =self.fetch_and_save_project_id()
         test_case_id = self.fetch_and_save_test_case_id_from_test_name_runid(run_id,test_case_name)
@@ -223,8 +257,10 @@ class PyLodge():
 
     def mark_test_as_skipped(self, test_case_name=None):
         """
+        This method will mark the executed step in a test run as Skipped in Test Lodge provided
+        the executed step title.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param test_case_name: The title of the test case for which the status need to be marked in Test Lodge
         """
         project_id =self.project_id
         run_id = self.run_id
@@ -237,8 +273,11 @@ class PyLodge():
 
     def mark_test_as_skipped_runid(self, run_id, test_case_name=None):
         """
+        This method will mark the executed step in a test run as Skipped in Test Lodge provided
+        the executed step title and run id.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param test_case_name: The title of the test case for which the status need to be marked in Test Lodge
+        run_id: The run id of the test run which contains the executed step
         """
         project_id =self.fetch_and_save_project_id()
         test_case_id = self.fetch_and_save_test_case_id_from_test_name_runid(run_id,test_case_name)
@@ -251,7 +290,15 @@ class PyLodge():
     def mark_test_status(self, test_case_name,status='skipped',test_run_name=None,test_log=None):
         """
 
-        :param test_case_name: If None, will try to guess from stack trace
+        This method will mark the executed step in a test run as Passed / Failed / Skipped in Test Lodge
+        provided  test run name and the executed step title.
+        :param test_case_name: The title of the test case for which the status need to be marked in Test Lodge.
+            test_run_name(optional): The run name of the test run which contains the executed step.
+            if None, pylodge will assume the created test run as the test run that has the executed test.
+            status(optional): The execution status of the test. Passed / Failed / Skipped. The default is Skipped.
+            test_log(optional): It is possible to pass a runtime log in to this method.
+            If this argument is appropriately set, then pylodge will also insert the runtime log
+            as a comment for the executed step
         """
         project_id =self.project_id
         if test_run_name==None:
@@ -278,8 +325,15 @@ class PyLodge():
 
     def mark_test_status_multiple(self, test_case_names=None,status='skipped',test_run_name=None, test_case_ids=None):
         """
+        This method will mark multiple executed steps in a test run as Passed / Failed / Skipped
+        in Test Lodge provided  executed step ids / titles  as  list .
+        It will expect either executed step ids or executed step titles as argument.
+        If you provide one, the other will become optional.
 
-        :param test_case_name: If None, will try to guess from stack trace
+        :param test_case_names: The list of titles of the test cases for which the status need to be marked in Test Lodge.
+                test_case_ids: The list of ids of the test cases for which the status need to be marked in Test Lodge
+                test_run_name(optional): The run name of the test run which contains the executed step. if None, pylodge will assume the created test run as the test run that has the executed test.
+                status(optional): The execution status of the test. Passed / Failed/ Skipped . The default is Skipped.
         """
         project_id =self.project_id
         if test_run_name==None:
