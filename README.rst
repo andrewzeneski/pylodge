@@ -291,14 +291,15 @@ Example Implementation with selenium webdriver, pytest, xdist and redis :
 =========================================================================
 
 My example assumes the test automation project directory structure as mentioned below and using pytest
+
 myproject/
 
-pages/
+    pages/
 
         page1.py
         page2.py
         …
-tests/
+    tests/
         \__init__.py
         conftest.py
 
@@ -308,8 +309,7 @@ tests/
         module2/
         test_functional_test_group2.py
         …
-
-        testlodge.py
+    updatetestlodge.py
 
 The actual tests are implemented as methods inside the test_functional_test_group1.py files. So each of those methods
 will have a prefix as ‘test_’ as a standard pytest naming convention and then followed by the test lodge prefix .
