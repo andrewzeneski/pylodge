@@ -318,6 +318,7 @@ in test lodge and tc01 will be the prefix of that test case.
 
 For our tests we used pytest and redis. The conftest_.py file for our implementation can be found here conftest_ .
 Download and start the redis server before running the tests.
+
 .. _conftest: https://gist.github.com/akondapalli/60165ad869f88d4f00bd#file-conftest-py
  
 Once the automated scripts are run, the tests along with the execution status and the logs are saved in to redis keys.
