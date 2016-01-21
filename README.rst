@@ -300,13 +300,16 @@ myproject/
         page2.py
         …
     tests/
+
         \__init__.py
         conftest.py
 
-        module1/
+        module-1-folder/
+
         test_functional_test_group1.py
 
-        module2/
+        module-2-folder/
+
         test_functional_test_group2.py
         …
     updatetestlodge.py
