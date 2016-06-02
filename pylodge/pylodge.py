@@ -184,7 +184,7 @@ class PyLodge():
 
 
 
-    def fetch_and_save_not_run_test_case_ids(self, test_run_name):
+    def fetch_and_save_not_run_test_case_ids(self, test_run_name=None):
         """
         Gets the test cases not executed in a given test_run_name
          :param test_run_name: The name of test run
@@ -194,10 +194,13 @@ class PyLodge():
 
         # Make API call to get the test Run ID from the test run name
         project_id = self.fetch_and_save_project_id()
-        response = requests.get(self._api_url + '/v1/projects/%s/runs.json' % project_id,
-                                 auth=self._auth_tuple)
-        response_dict = response.json()
-        run_id = filter(lambda runs: test_run_name in runs.values(), response_dict['runs'])[0]['id']
+        run_id = self.run_id
+        if test_run_name != None:
+            response = requests.get(self._api_url + '/v1/projects/%s/runs.json' % project_id,
+                                     auth=self._auth_tuple)
+            response_dict = response.json()
+            run_id = filter(lambda runs: test_run_name in runs.values(), response_dict['runs'])[0]['id']
+
         response = requests.get(self._api_url + '/v1/projects/%s/runs/%s/executed_steps.json' % (project_id, run_id),
                                 auth=self._auth_tuple)
         response_dict = response.json()
