@@ -14,19 +14,40 @@ class PyLodge():
         self._app_name = project_name
         self._api_url = api_url
         self._auth_tuple = (self.username, self.password)
+        self.project_id = None
 
     def fetch_and_save_project_id(self):
         # Get Project ID. This method returns the id of the specified test lodge project .
-        response = requests.get(self._api_url + '/v1/projects.json', auth=self._auth_tuple)
-        response_dict = response.json()
-        self.project_id = filter(lambda project: self._app_name in project.values(), response_dict['projects'])[0]['id']
+        if self.project_id == None:
+            response = requests.get(self._api_url + '/v1/projects.json', auth=self._auth_tuple)
+            response_dict = response.json()
+            self.project_id = filter(lambda project: self._app_name in project.values(), response_dict['projects'])[0]['id']
         return self.project_id
 
-    def create_test_run(self, run_name=None):
+    def fetch_test_suite_ids(self, plan_id=None):
+        """
+        This method will fetch the suite IDs for all the test suites associate with the plan identified by the provided plan_id.
+        :param: plan_id: The plan ID to fetch test suite IDs for
+        """
+
+        project_id = self.fetch_and_save_project_id()
+        if plan_id == None:
+            response = requests.get(self._api_url + '/v1/projects/%s/suites.json' % project_id,
+                auth=self._auth_tuple)
+        else:
+            response = requests.get(self._api_url + '/v1/projects/%s/suites.json?plan_id=%s' % (project_id, plan_id),
+                auth=self._auth_tuple)
+        response_dict = response.json()
+
+        return [suite_dict['id'] for suite_dict in response_dict['suites']]
+
+
+    def create_test_run(self, run_name=None, suite_ids=None):
         """
         This method will create a test run in Test Lodge including all test suites in it. It will return the run id of
         the created test run.
         :param run_name: If None, will create test run with the timestamped name starting as Automated_Test_Run_
+        :param suite_ids: If None, will run all suites
         :return run_id: The test run id
         """
 
@@ -36,7 +57,9 @@ class PyLodge():
                                 auth=self._auth_tuple)
         response_dict = response.json()
 
-        suite_ids = [suite_dict['id'] for suite_dict in response_dict['suites']]
+        if suite_ids == None:
+            suite_ids = self.fetch_test_suite_ids()
+
         time_stamp = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S').format()
         if not run_name:
             run_name = 'Automated_Test_Run_' + '-' + time_stamp
